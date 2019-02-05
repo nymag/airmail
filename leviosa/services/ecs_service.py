@@ -5,7 +5,7 @@ from botocore.exceptions import ClientError
 from .utils import errLog
 from .service_config import ServiceConfig
 from .task_config import TaskConfig
-from nymdeploy.utils.bash import runScript
+from leviosa.utils.bash import runScript
 import subprocess
 
 class ECSService(DeployFile):

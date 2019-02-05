@@ -3,7 +3,7 @@ import os
 import sys
 import click
 
-CONTEXT_SETTINGS = dict(auto_envvar_prefix='NYMDEPLOY')
+CONTEXT_SETTINGS = dict(auto_envvar_prefix='LEVIOSA')
 
 class Context(object):
     def __init__(self):
@@ -55,7 +55,7 @@ class ComplexCLI(click.MultiCommand):
         try:
             if sys.version_info[0] == 2:
                 name = name.encode('ascii', 'replace')
-            mod = __import__('nymdeploy.commands.cmd_' + name,
+            mod = __import__('leviosa.commands.cmd_' + name,
                              None, None, ['cli'])
         except ImportError:
             return

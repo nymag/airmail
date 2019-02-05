@@ -1,6 +1,6 @@
 from functools import reduce
-from nymdeploy.utils.files import read_yml,determine_project_path
-from nymdeploy.utils.config import buildConfig
+from leviosa.utils.files import read_yml,determine_project_path
+from leviosa.utils.config import buildConfig
 from pydash import set_
 
 class TaskConfig():

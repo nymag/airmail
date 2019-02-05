@@ -1,7 +1,7 @@
 import click
 import boto3
-from nymdeploy.cli import pass_context
-from nymdeploy.services.ecs_service import ECSService
+from leviosa.cli import pass_context
+from leviosa.services.ecs_service import ECSService
 
 # The ECS Service instance
 ecs_service = ECSService()

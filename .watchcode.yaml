@@ -1,11 +1,11 @@
 filesets:
   default:
     include:
-      - "nymdeploy/*.py"
-      - "nymdeploy/commands/*.py"
-      - "nymdeploy/services/*.py"
-      - "nymdeploy/utils/*.py"
-      - "nymdeploy/bash/*.sh"
+      - "leviosa/*.py"
+      - "leviosa/commands/*.py"
+      - "leviosa/services/*.py"
+      - "leviosa/utils/*.py"
+      - "leviosa/bash/*.sh"
       - "*.yaml"
     exclude:
     exclude_gitignore: true
