@@ -1,0 +1,3 @@
+include nymdeploy/data/*.json
+include nymdeploy/data/*.yml
+include nymdeploy/bash/*.sh

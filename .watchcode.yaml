@@ -1,0 +1,25 @@
+filesets:
+  default:
+    include:
+      - "nymdeploy/*.py"
+      - "nymdeploy/commands/*.py"
+      - "nymdeploy/services/*.py"
+      - "nymdeploy/utils/*.py"
+      - "nymdeploy/bash/*.sh"
+      - "*.yaml"
+    exclude:
+    exclude_gitignore: true
+    match_mode: "gitlike"
+
+tasks:
+  default:
+    fileset: default
+    clear_screen: true
+    queue_events: false
+    commands:
+      - "pwd"
+      - "echo 'foo'"
+      - "python3 setup.py install"
+
+
+default_task: default
