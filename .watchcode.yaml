@@ -17,9 +17,7 @@ tasks:
     clear_screen: true
     queue_events: false
     commands:
-      - "pwd"
-      - "echo 'foo'"
-      - "python3 setup.py install"
+      - "pip3 install -e ."
 
 
 default_task: default
