@@ -28,7 +28,7 @@ Leviosa needs to be run in a project with a `.deploy` directory. It will look in
     └── ...
 
 ### Config File
-<Config file docs coming soon>
+[Config file docs coming soon](./docs/config.md)
 
 
 ## Local Development
