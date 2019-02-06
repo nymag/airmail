@@ -19,11 +19,13 @@ class TaskConfig():
             self.assign_env_vars
         ]
 
-    def build(self, version):
+    def build(self, version, env):
         # The config that will be sent to AWS client
         config = read_yml(determine_project_path() + '/../data/task.yml')
         # Assign the image version to use
         self.image_version = version
+        # Assign the environment we're running in
+        self.env = env
         # Run throught the config builder reduce
         return build_config(self.transforms, config)
 
@@ -57,7 +59,7 @@ class TaskConfig():
     def assign_env_vars(self, config):
         env_vars = []
         # TODO: make pathing more robust and with envs
-        with open('./.deploy/qa.env') as f:
+        with open('./.deploy/' + self.env + '.env') as f:
             for line in f.readlines():
                 name, value = line.strip().split('=')
                 env_vars.append({

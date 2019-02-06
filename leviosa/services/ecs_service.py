@@ -1,20 +1,20 @@
-from .deploy_file import DeployFile
+import os, subprocess
 import boto3
 import click
 from botocore.exceptions import ClientError
 from .utils import err_log
 from .service_config import ServiceConfig
+from .deploy_file import DeployFile
 from .task_config import TaskConfig
 from leviosa.utils.bash import run_script
 from leviosa.utils.files import read_package_json_version
-import subprocess
 
 class ECSService(DeployFile):
-    def __init__(self):
+    def __init__(self, env):
         # ECS client
         self.client = boto3.client('ecs')
         # The env
-        self.env = 'qa'
+        self.env = env
 
         # Init the Deploy File class
         DeployFile.__init__(self, self.env)
@@ -79,7 +79,7 @@ class ECSService(DeployFile):
         """Return the JSON for a task definition"""
 
         image_version = self.find_image_version()
-        return self.TaskConfigBuilder.build(image_version)
+        return self.TaskConfigBuilder.build(image_version, self.env)
 
     def build_container_image(self):
         """Build Container Image

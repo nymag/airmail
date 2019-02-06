@@ -41,7 +41,7 @@ cmd_folder = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                           'commands'))
 
 
-class ComplexCLI(click.MultiCommand):
+class LeviosaCLI(click.MultiCommand):
     def list_commands(self, ctx):
         rv = []
         for filename in os.listdir(cmd_folder):
@@ -61,7 +61,9 @@ class ComplexCLI(click.MultiCommand):
             return
         return mod.cli
 
-@click.command(cls=ComplexCLI, context_settings=CONTEXT_SETTINGS)
+@click.command(cls=LeviosaCLI, context_settings=CONTEXT_SETTINGS)
+@click.option('-e', '--env', help='The environment to target', default=lambda: os.environ.get('ENV', ''))
 @pass_context
-def cli(ctx):
+def cli(ctx, env):
     """A CLI for getting code into the cloud"""
+    ctx.env = env
