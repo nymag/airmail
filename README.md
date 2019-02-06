@@ -1,4 +1,4 @@
-# AirMail (WIP)
+# Airmail
 
 > A CLI tool for deploying projects to AWS
 
