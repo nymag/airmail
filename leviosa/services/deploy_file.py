@@ -17,45 +17,50 @@ class DeployFile():
 
         # Build some properties here
         # TODO: make it a reduce? :)
-        self.buildClusterAndFamily()
-        self.injectAWSAccountId()
+        self.inject_cluster_and_family()
+        self.inject_aws_account_id()
+        self.build_image_id()
 
     # Add top level account id
-    def injectAWSAccountId(self):
+    def inject_aws_account_id(self):
         id = boto3.client('sts').get_caller_identity().get('Account')
         set_(self.deploy_json, 'accountID', id)
 
     # Grab the name from the file
-    def getName(self):
-        return self.getTopLevelProp('name')
+    def get_name(self):
+        return self.get_top_level_prop('name')
 
     # Grab the org name
-    def getOrg(self):
-        return self.getTopLevelProp('org')
+    def get_org(self):
+        return self.get_top_level_prop('org')
+
+    def build_image_id(self):
+        image_tag = self.get_top_level_prop('accountID') + '.dkr.ecr.us-east-1.amazonaws.com/' + self.get_with_prefix('name', '/')
+        set_(self.deploy_json, '.imageID', image_tag)
 
     # Get the value but prefix with `<ORG>-<ENV>-`
-    def getWithPrefix(self, prop, delim='-'):
-        topLevel = self.getTopLevelProp(prop)
-        value = topLevel if topLevel != None else self.getProp(prop)
+    def get_with_prefix(self, prop, delim='-'):
+        topLevel = self.get_top_level_prop(prop)
+        value = topLevel if topLevel != None else self.get_prop(prop)
 
-        return self.getOrg() + delim + self.env + delim + value
+        return self.get_org() + delim + self.env + delim + value
 
 
-    def buildClusterAndFamily(self):
+    def inject_cluster_and_family(self):
         """Using the `name`, assign the cluster and family for the service/task"""
 
-        cluster_val = self.getWithPrefix('name')
+        cluster_val = self.get_with_prefix('name')
         set_(self.deploy_json, '.cluster', cluster_val)
         set_(self.deploy_json, '.family', cluster_val)
 
     #  Get a tol level property
-    def getTopLevelProp(self, prop, default=None):
+    def get_top_level_prop(self, prop, default=None):
         """Retrieve a property's value from the top level of the config"""
 
         return get(self.deploy_json, prop, default)
 
     # Grab a property from the specific env
-    def getProp(self, prop, default=None):
+    def get_prop(self, prop, default=None):
         """Get a property's value that is nested in the env object"""
         prop = self.env + '.' + prop
         return get(self.deploy_json, prop, default)

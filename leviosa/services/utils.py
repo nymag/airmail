@@ -3,7 +3,7 @@ from pathlib import Path
 import click
 import yaml
 
-def errLog(msg, *args):
+def err_log(msg, *args):
     if args:
         msg %= args
     click.echo(click.style('Error: ', fg='red', bold=True) + msg)

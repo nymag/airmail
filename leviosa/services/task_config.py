@@ -1,58 +1,60 @@
 from functools import reduce
 from leviosa.utils.files import read_yml,determine_project_path
-from leviosa.utils.config import buildConfig
+from leviosa.utils.config import build_config
 from pydash import set_
 
 class TaskConfig():
-    def __init__(self, getProp, getTopLevelProp, getWithPrefix):
+    def __init__(self, get_prop, get_top_level_prop, get_with_prefix):
         # Getters passed in to read from the config file
         # TODO: cleanup later? Pass in a different away
-        self.getProp = getProp
-        self.getTopLevelProp = getTopLevelProp
-        self.getWithPrefix = getWithPrefix
+        self.get_prop = get_prop
+        self.get_top_level_prop = get_top_level_prop
+        self.get_with_prefix = get_with_prefix
 
         # The list of functions to reduce through
         self.transforms = [
-            self.assignTaskInfo,
+            self.assign_task_info,
             self.assignTaskRoles,
-            self.assignLogging,
-            self.assignEnvVars
+            self.assign_logging,
+            self.assign_env_vars
         ]
 
-    def build(self):
+    def build(self, version):
         # The config that will be sent to AWS client
         config = read_yml(determine_project_path() + '/../data/task.yml')
+        # Assign the image version to use
+        self.image_version = version
         # Run throught the config builder reduce
-        return buildConfig(self.transforms, config)
+        return build_config(self.transforms, config)
 
     def assignTaskRoles(self, config):
-        account_id = self.getTopLevelProp('accountID')
-        config['taskRoleArn'] = 'arn:aws:iam::' + account_id + ':role/' + self.getProp('taskRole')
-        config['executionRoleArn'] = 'arn:aws:iam::' + account_id + ':role/' + self.getProp('executionRole')
+        account_id = self.get_top_level_prop('accountID')
+        config['taskRoleArn'] = 'arn:aws:iam::' + account_id + ':role/' + self.get_prop('taskRole')
+        config['executionRoleArn'] = 'arn:aws:iam::' + account_id + ':role/' + self.get_prop('executionRole')
         return config
 
-    def setIntoContainerDefinition(self, config, prop, value):
+    def set_into_container_definition(self, config, prop, value):
         path = 'containerDefinitions[0].' + prop
         return set_(config, path, value)
 
     # Adds the desired count to the config
-    def assignTaskInfo(self, config):
-        config['family'] = self.getTopLevelProp('family')
+    def assign_task_info(self, config):
+        config['family'] = self.get_top_level_prop('family')
 
-        self.setIntoContainerDefinition(config, 'name', self.getTopLevelProp('name'))
-        self.setIntoContainerDefinition(config, 'image', self.getTopLevelProp('family'))
-        self.setIntoContainerDefinition(config, 'command', self.getProp('deployment.command'))
-        self.setIntoContainerDefinition(config, 'cpu', self.getProp('deployment.cpu'))
-        self.setIntoContainerDefinition(config, 'memory', self.getProp('deployment.memory'))
-        self.setIntoContainerDefinition(config, 'portMappings[0].containerPort', self.getProp('deployment.port'))
+        self.set_into_container_definition(config, 'name', self.get_top_level_prop('name'))
+        self.set_into_container_definition(config, 'image', self.get_top_level_prop('imageID') + ':' + self.image_version)
+        self.set_into_container_definition(config, 'command', self.get_prop('deployment.command'))
+        self.set_into_container_definition(config, 'cpu', self.get_prop('deployment.cpu'))
+        self.set_into_container_definition(config, 'memory', self.get_prop('deployment.memory'))
+        self.set_into_container_definition(config, 'portMappings[0].containerPort', self.get_prop('deployment.port'))
         return config
 
-    def assignLogging(self, config):
-        self.setIntoContainerDefinition(config, 'logConfiguration.logDriver', self.getProp('logging.logDriver'))
-        self.setIntoContainerDefinition(config, 'logConfiguration.options', self.getProp('logging.options'))
+    def assign_logging(self, config):
+        self.set_into_container_definition(config, 'logConfiguration.logDriver', self.get_prop('logging.logDriver'))
+        self.set_into_container_definition(config, 'logConfiguration.options', self.get_prop('logging.options'))
         return config
 
-    def assignEnvVars(self, config):
+    def assign_env_vars(self, config):
         env_vars = []
         # TODO: make pathing more robust and with envs
         with open('./.deploy/qa.env') as f:
@@ -62,5 +64,5 @@ class TaskConfig():
                     'name': name,
                     'value': value
                 })
-        self.setIntoContainerDefinition(config, 'environment', env_vars)
+        self.set_into_container_definition(config, 'environment', env_vars)
         return config

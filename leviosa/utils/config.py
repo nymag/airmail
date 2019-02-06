@@ -1,8 +1,5 @@
 from functools import reduce
 
-def buildConfig(transforms, config):
-    return reduce(process, transforms, config)
-
-# The function that the reduce runs
-def process(config, fn):
-    return fn(config)
+def build_config(transforms, config):
+    """Reduces a dictionary through functions to modify the dictionary"""
+    return reduce(lambda c, fn: fn(c), transforms, config)

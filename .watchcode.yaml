@@ -19,5 +19,4 @@ tasks:
     commands:
       - "pip3 install -e ."
 
-
 default_task: default

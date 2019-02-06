@@ -21,16 +21,16 @@ class Context(object):
         if self.verbose:
             self.log(msg, *args)
 
-    def preambleLog(self, preamble, value):
+    def preamble_log(self, preamble, value):
         click.echo(click.style(preamble, fg='blue', bold=True) + ': ' + value)
 
-    def infoLog(self, msg):
+    def info_log(self, msg):
         click.echo(click.style('Info', fg='green', bold=True) + ': ' + msg)
 
-    def addLineBreak(self):
+    def add_line_break(self):
         click.echo('\n')
 
-    def errLog(self, msg, *args):
+    def err_log(self, msg, *args):
         if args:
             msg %= args
         click.echo(click.style('Error: ', fg='red', bold=True) + msg)
@@ -62,14 +62,6 @@ class ComplexCLI(click.MultiCommand):
         return mod.cli
 
 @click.command(cls=ComplexCLI, context_settings=CONTEXT_SETTINGS)
-@click.option('--home', type=click.Path(exists=True, file_okay=False,
-                                        resolve_path=True),
-              help='Changes the folder to operate on.')
-@click.option('-v', '--verbose', is_flag=True,
-              help='Enables verbose mode.')
 @pass_context
-def cli(ctx, verbose, home):
-    """A complex command line interface."""
-    ctx.verbose = verbose
-    if home is not None:
-        ctx.home = home
+def cli(ctx):
+    """A CLI for getting code into the cloud"""

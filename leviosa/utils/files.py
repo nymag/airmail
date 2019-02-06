@@ -1,5 +1,6 @@
 import os, sys
 import yaml
+import json
 import click
 from pathlib import Path
 
@@ -16,6 +17,14 @@ def read_yml(filepath):
             'Could not read the .yml at ' +
             click.style(filepath, bold=True))
         sys.exit()
+
+def read_package_json_version(project_dir):
+    target_file = Path('./' + project_dir + '/package.json')
+
+    if target_file.is_file():
+        with open(target_file) as json_file:
+            data = json.load(json_file)
+            return data['version']
 
 # Determines the path to files inside the
 # project. (i.e. the `data` directory)
