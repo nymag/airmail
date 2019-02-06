@@ -1,8 +1,8 @@
 import os
 import click
 import boto3
-from leviosa.cli import pass_context
-from leviosa.services.ecs_service import ECSService
+from airmail.cli import pass_context
+from airmail.services.ecs_service import ECSService
 
 @click.group(short_help='Create/modify ECS services')
 @pass_context

@@ -1,6 +1,6 @@
 from functools import reduce
-from leviosa.utils.files import read_yml,determine_project_path
-from leviosa.utils.config import build_config
+from airmail.utils.files import read_yml,determine_project_path
+from airmail.utils.config import build_config
 
 
 class ServiceConfig():

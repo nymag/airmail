@@ -12,9 +12,9 @@ from shutil import rmtree
 from setuptools import find_packages, setup, Command
 
 # Package meta-data.
-NAME = 'leviosa'
+NAME = 'airmail'
 DESCRIPTION = 'A deploy tool for AWS projects'
-URL = 'https://github.com/nymag/leviosa'
+URL = 'https://github.com/nymag/airmail'
 EMAIL = 'jon.winton@nymag.com'
 AUTHOR = 'Jon Winton'
 REQUIRES_PYTHON = '>=3.6.0'
@@ -26,7 +26,6 @@ REQUIRED = [
     'Click',
     'pyyaml',
     'pydash'
-    # 'requests', 'maya', 'records',
 ]
 
 # What packages are optional?
@@ -112,7 +111,7 @@ setup(
     # data_files=[('boto', ['boto/*.json'])]
     entry_points={
         'console_scripts': [
-            'leviosa = leviosa.cli:cli'
+            'airmail = airmail.cli:cli'
         ]
     },
     install_requires=REQUIRED,

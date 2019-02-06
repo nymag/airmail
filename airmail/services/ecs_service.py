@@ -6,8 +6,8 @@ from .utils import err_log
 from .service_config import ServiceConfig
 from .deploy_file import DeployFile
 from .task_config import TaskConfig
-from leviosa.utils.bash import run_script
-from leviosa.utils.files import read_package_json_version
+from airmail.utils.bash import run_script
+from airmail.utils.files import read_package_json_version
 
 class ECSService(DeployFile):
     def __init__(self, env):

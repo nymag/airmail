@@ -1,11 +1,11 @@
 filesets:
   default:
     include:
-      - "leviosa/*.py"
-      - "leviosa/commands/*.py"
-      - "leviosa/services/*.py"
-      - "leviosa/utils/*.py"
-      - "leviosa/bash/*.sh"
+      - "airmail/*.py"
+      - "airmail/commands/*.py"
+      - "airmail/services/*.py"
+      - "airmail/utils/*.py"
+      - "airmail/bash/*.sh"
       - "*.yaml"
     exclude:
     exclude_gitignore: true

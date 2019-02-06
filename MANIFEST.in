@@ -1,3 +1,5 @@
-include leviosa/data/*.json
-include leviosa/data/*.yml
-include leviosa/bash/*.sh
+include airmail/data/*.json
+include airmail/data/*.yml
+include airmail/bash/*.sh
+README.md
+LICENSE
