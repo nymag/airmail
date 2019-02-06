@@ -1,0 +1,22 @@
+filesets:
+  default:
+    include:
+      - "leviosa/*.py"
+      - "leviosa/commands/*.py"
+      - "leviosa/services/*.py"
+      - "leviosa/utils/*.py"
+      - "leviosa/bash/*.sh"
+      - "*.yaml"
+    exclude:
+    exclude_gitignore: true
+    match_mode: "gitlike"
+
+tasks:
+  default:
+    fileset: default
+    clear_screen: true
+    queue_events: false
+    commands:
+      - "pip3 install -e ."
+
+default_task: default

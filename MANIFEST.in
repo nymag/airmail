@@ -1,0 +1,3 @@
+include leviosa/data/*.json
+include leviosa/data/*.yml
+include leviosa/bash/*.sh
