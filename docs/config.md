@@ -133,7 +133,7 @@ The upper limit on the number of tasks your service will run. More info: https:/
 
 ##### `<ENV>.deployment.minHealthyPercent`
 
-> integer (optional) [default: 200]
+> integer (optional) [default: 80]
 
 The lower limit on the number of tasks your service will run. More info: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/basic-service-params.html
 
