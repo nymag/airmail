@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 printf "\n"
 echo "Building to repo: $ECR_REPO"
 echo "Building version: $VERSION"

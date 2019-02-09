@@ -15,9 +15,11 @@ class ECSService(DeployFile):
         if profile is None:
             self.client = boto3.client('ecs')
         else:
-            self.client = boto3.session.Session(profile_name=profile);
+            self.session = boto3.session.Session(profile_name=profile)
+            self.client = self.session.client('ecs')
         # The env
         self.env = env
+        self.profile = profile
 
         # Init the Deploy File class
         DeployFile.__init__(self, self.env)
@@ -101,6 +103,9 @@ class ECSService(DeployFile):
             'TASK_IMAGE_TAG': image_tag,
             'APP_DIR': app_dir
         }
+
+        if not self.profile is None:
+            env_dict['AWS_PROFILE'] = self.profile
 
         val = run_script('ecr_push', env_dict) # Returns the exit code from bash
 
