@@ -62,8 +62,10 @@ class AirMailCLI(click.MultiCommand):
         return mod.cli
 
 @click.command(cls=AirMailCLI, context_settings=CONTEXT_SETTINGS)
+@click.option('-p', '--profile', help='The AWS profile to use')
 @click.option('-e', '--env', help='The environment to target', default=lambda: os.environ.get('ENV', ''))
 @pass_context
-def cli(ctx, env):
+def cli(ctx, profile, env):
     """A CLI for getting code into the cloud"""
     ctx.env = env
+    ctx.profile=profile

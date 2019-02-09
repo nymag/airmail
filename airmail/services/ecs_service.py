@@ -10,9 +10,12 @@ from airmail.utils.bash import run_script
 from airmail.utils.files import read_package_json_version
 
 class ECSService(DeployFile):
-    def __init__(self, env):
+    def __init__(self, env=None, profile=None):
         # ECS client
-        self.client = boto3.client('ecs')
+        if profile is None:
+            self.client = boto3.client('ecs')
+        else:
+            self.client = boto3.session.Session(profile_name=profile);
         # The env
         self.env = env
 
