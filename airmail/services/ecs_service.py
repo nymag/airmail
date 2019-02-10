@@ -10,11 +10,16 @@ from airmail.utils.bash import run_script
 from airmail.utils.files import read_package_json_version
 
 class ECSService(DeployFile):
-    def __init__(self, env):
+    def __init__(self, env=None, profile=None):
         # ECS client
-        self.client = boto3.client('ecs')
+        if profile is None:
+            self.client = boto3.client('ecs')
+        else:
+            self.session = boto3.session.Session(profile_name=profile)
+            self.client = self.session.client('ecs')
         # The env
         self.env = env
+        self.profile = profile
 
         # Init the Deploy File class
         DeployFile.__init__(self, self.env)
@@ -98,6 +103,9 @@ class ECSService(DeployFile):
             'TASK_IMAGE_TAG': image_tag,
             'APP_DIR': app_dir
         }
+
+        if not self.profile is None:
+            env_dict['AWS_PROFILE'] = self.profile
 
         val = run_script('ecr_push', env_dict) # Returns the exit code from bash
 
