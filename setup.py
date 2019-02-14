@@ -25,7 +25,8 @@ REQUIRED = [
     'boto3',
     'Click',
     'pyyaml',
-    'pydash'
+    'pydash',
+    'python-dotenv'
 ]
 
 # What packages are optional?
