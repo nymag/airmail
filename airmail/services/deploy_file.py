@@ -38,11 +38,10 @@ class DeployFile():
         image_tag = self.get_top_level_prop('accountID') + '.dkr.ecr.us-east-1.amazonaws.com/' + self.get_with_prefix('name', '/')
         set_(self.deploy_json, '.imageID', image_tag)
 
-    # Get the value but prefix with `<ORG>-<ENV>-`
     def get_with_prefix(self, prop, delim='-'):
-        topLevel = self.get_top_level_prop(prop)
-        value = topLevel if topLevel != None else self.get_prop(prop)
-
+        """Retrieve a value with <ORG>-<ENV>- prefix. Can pass in custom delimiter """
+        top_level = self.get_top_level_prop(prop)
+        value = top_level if top_level != None else self.get_prop(prop)
         return self.get_org() + delim + self.env + delim + value
 
 
