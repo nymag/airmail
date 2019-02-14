@@ -62,7 +62,7 @@ class AirMailCLI(click.MultiCommand):
         return mod.cli
 
 @click.command(cls=AirMailCLI, context_settings=CONTEXT_SETTINGS)
-@click.option('-p', '--profile', help='The AWS profile to use', default=lambda: os.environ.get('PROFILE', None))
+@click.option('-p', '--profile', help='The AWS profile to use', default=lambda: os.environ.get('AWS_PROFILE', None))
 @click.option('-e', '--env', help='The environment to target', default=lambda: os.environ.get('ENV', ''))
 @pass_context
 def cli(ctx, profile, env):
