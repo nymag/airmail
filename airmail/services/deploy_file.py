@@ -55,7 +55,6 @@ class DeployFile():
     #  Get a tol level property
     def get_top_level_prop(self, prop, default=None):
         """Retrieve a property's value from the top level of the config"""
-
         return get(self.deploy_json, prop, default)
 
     # Grab a property from the specific env

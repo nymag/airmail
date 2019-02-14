@@ -1,7 +1,8 @@
 from functools import reduce
+from pydash import set_
+from dotenv import dotenv_values
 from airmail.utils.files import read_yml,determine_project_path
 from airmail.utils.config import build_config
-from pydash import set_
 
 class TaskConfig():
     def __init__(self, get_prop, get_top_level_prop, get_with_prefix):
@@ -52,19 +53,21 @@ class TaskConfig():
         return config
 
     def assign_logging(self, config):
+        """ Assign the logging configuration options to the task definition """
         self.set_into_container_definition(config, 'logConfiguration.logDriver', self.get_prop('logging.logDriver'))
         self.set_into_container_definition(config, 'logConfiguration.options', self.get_prop('logging.options'))
         return config
 
     def assign_env_vars(self, config):
+        """ Read from the environment env file and turn the values into environment variables for the task definition """
         env_vars = []
-        # TODO: make pathing more robust and with envs
-        with open('./.deploy/' + self.env + '.env') as f:
-            for line in f.readlines():
-                name, value = line.strip().split('=')
-                env_vars.append({
-                    'name': name,
-                    'value': value
-                })
+        env_dict=dotenv_values(dotenv_path='./.deploy/' + self.env + '.env')
+
+        for name, value in env_dict.items():
+            env_vars.append({
+                'name': name,
+                'value': value
+            })
+
         self.set_into_container_definition(config, 'environment', env_vars)
         return config
