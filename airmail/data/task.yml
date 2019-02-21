@@ -17,9 +17,6 @@ containerDefinitions:
     environment: []
     mountPoints: []
     volumesFrom: []
-    logConfiguration:
-      logDriver:
-      options:
 volumes: []
 placementConstraints: []
 requiresCompatibilities:
