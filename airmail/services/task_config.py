@@ -54,8 +54,11 @@ class TaskConfig():
 
     def assign_logging(self, config):
         """ Assign the logging configuration options to the task definition """
-        self.set_into_container_definition(config, 'logConfiguration.logDriver', self.get_prop('logging.logDriver'))
-        self.set_into_container_definition(config, 'logConfiguration.options', self.get_prop('logging.options'))
+        logging_config = self.get_prop('logging')
+
+        if logging_config is not None:
+            self.set_into_container_definition(config, 'logConfiguration', logging_config)
+
         return config
 
     def assign_env_vars(self, config):
