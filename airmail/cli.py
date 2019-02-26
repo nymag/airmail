@@ -28,7 +28,8 @@ class Context(object):
         click.echo(click.style("Warn", fg="yellow", bold=True) + ": " + msg)
 
     def verbose_log(self, msg):
-        click.echo(click.style("Verbose", fg="white", bold=True) + ": " + msg)
+        if self.verbose:
+            click.echo(click.style("Verbose", fg="white", bold=True) + ": " + msg)
 
     def info_log(self, msg):
         click.echo(click.style("Info", fg="green", bold=True) + ": " + msg)

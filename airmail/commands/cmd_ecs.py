@@ -30,11 +30,16 @@ def deploy_service(ctx):
     ctx.info_log('Running deploy-service...')
     ctx.info_log('This command will create an ECS service or update an existing service.')
     service_exists = ctx.ecs_service.service_exists() # Does the service exist?
-
     if service_exists:
-        ctx.ecs_service.update_service()
+        if not ctx.dry_run:
+            ctx.ecs_service.update_service()
+        else:
+            ctx.warn_log("Service exists but will not be updated due to dry run mode")
     else:
-        ctx.ecs_service.create_service()
+        if not ctx.dry_run:
+            ctx.ecs_service.create_service()
+        else:
+            ctx.warn_log("Service does not exist but will not be created due to dry run mode")
 
 @cli.command(name = 'register-task', short_help='Creates a task definition based off the deploy configuration file')
 @pass_context
@@ -63,5 +68,3 @@ def buildImage(ctx):
         ctx.info_log("Built project image: " + built_tag)
     else:
         ctx.warn_log("Image not built due to dry run flag")
-        ctx.verbose_log("Generated task definition JSON:")
-        ctx.verbose_log(json.dumps(task_definition))
