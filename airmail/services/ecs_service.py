@@ -35,8 +35,8 @@ class ECSService(DeployFile):
     def service_exists(self):
         """Given the config.yml file, check if the service exists in the target cluster"""
 
-        cluster = self.get_top_level_prop('cluster')
-        service_name = self.get_top_level_prop('service')
+        cluster = self.get_top_level_prop("cluster")
+        service_name = self.get_service()
 
         try:
             # Make the request
@@ -54,11 +54,11 @@ class ECSService(DeployFile):
                 return True
 
         except ClientError as e:
-            if e.response['Error']['Code'] == 'ClusterNotFoundException':
+            if e.response["Error"]["Code"] == "ClusterNotFoundException":
                 # If hitting this, the cluster does not exist
-                err_log('Cluster not found!')
+                err_log("Cluster not found!")
             else:
-                click.echo('Unexpected error: ' + e)
+                click.echo("Unexpected error: " + e)
 
     def create_service(self):
         """Create a service using the config.yml and default config (data/service.yml)"""

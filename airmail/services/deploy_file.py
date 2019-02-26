@@ -34,6 +34,11 @@ class DeployFile():
     def get_org(self):
         return self.get_top_level_prop('org')
 
+    def get_service(self):
+        """Get the service name from the config file"""
+        env_service_declaration = get(self.deploy_json, self.env + ".service", False)
+        return env_service_declaration
+
     def build_image_id(self):
         image_tag = self.get_top_level_prop('accountID') + '.dkr.ecr.us-east-1.amazonaws.com/' + self.get_with_prefix('name', '/')
         set_(self.deploy_json, '.imageID', image_tag)

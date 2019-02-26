@@ -17,11 +17,11 @@ def cli(ctx):
     ecs_service = ECSService(env=ctx.env, profile=ctx.profile)
     ctx.ecs_service = ecs_service
     ctx.add_line_break()
-    ctx.preamble_log('Current Env', ecs_service.get_env())
-    ctx.preamble_log('Project Name', ecs_service.get_name())
-    ctx.preamble_log('Service Name', ecs_service.get_top_level_prop('service'))
-    ctx.preamble_log('Project Cluster', ecs_service.get_top_level_prop('cluster'))
-    ctx.preamble_log('Project Family', ecs_service.get_top_level_prop('family'))
+    ctx.preamble_log("Current Env", ecs_service.get_env())
+    ctx.preamble_log("Project Name", ecs_service.get_name())
+    ctx.preamble_log("Service Name", ecs_service.get_service())
+    ctx.preamble_log("Project Cluster", ecs_service.get_top_level_prop("cluster"))
+    ctx.preamble_log("Project Family", ecs_service.get_top_level_prop("family"))
     ctx.add_line_break()
 
 @cli.command(name = 'deploy-service', short_help='Creates or updates a service based off the deploy configuration file')

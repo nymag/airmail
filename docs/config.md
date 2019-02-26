@@ -4,12 +4,12 @@ The `config.yml` file should live in a `.deploy` directory at the root of your p
 
 ### Example Config File
 ```yaml
-name: coolservice
-service: coolservice
+name: coolapp
 org: myorg
 projectDirectory: app
 
 qa:
+  service: coolservice
   taskRole: myCoolRole
   executionRole: myCoolTaskExecutionRole
   deployment:
@@ -31,7 +31,7 @@ qa:
 
 ## Top Level Properties
 
-Below are a list of all the top level properties required in the config file. There are four required top level properties and then environment specific configuration declarations.
+Below are a list of all the top level properties required in the config file. There are three required top level properties and then environment specific configuration declarations.
 
 #### Name
 
@@ -42,12 +42,6 @@ This should be the name of the application you're deploying. It's value will be 
   - The ECR repo to push the image to
   - The name of the container in the task definition
   - The name of the cluster to deploy into
-
-#### Service
-
-> `service` (string)
-
-Just the name of the ECS service deployed into the cluster.
 
 #### Org
 
@@ -67,7 +61,13 @@ This is just the directory where your application can be found relative to the `
 
 ### Environment Specific Config
 
-After the top level properties of `name`, `service`, `org`, and `projectDirectory` you will begin to define configuration for each environment. To do this simply define a new property that is the name of your environment. For this example we will proceed with an environment called `qa`, but this name can be anything that makes sense for your setup. The values of these properties have direct correlation to properties for ECS task/service declarations.
+After the top level properties of `name`, `org`, and `projectDirectory` you will begin to define configuration for each environment. To do this simply define a new property that is the name of your environment. For this example we will proceed with an environment called `qa`, but this name can be anything that makes sense for your setup. The values of these properties have direct correlation to properties for ECS task/service declarations.
+
+#### `<ENV>.service`
+
+> (string)
+
+The name of the ECS service deployed into the cluster.
 
 #### `<ENV>.taskRole`
 

@@ -33,7 +33,7 @@ class ServiceConfig():
         config['cluster'] = self.get_top_level_prop('cluster')
         config['taskDefinition'] = self.get_top_level_prop('family')
         config['desiredCount'] = self.get_prop('deployment.desiredCount')
-        config[service_prop] = self.get_top_level_prop('service')
+        config[service_prop] = self.get_prop("service")
         return config
 
     def assign_deployment_configuration(self, config):
