@@ -1,12 +1,16 @@
 import os
 import click
 import boto3
+import json
 from airmail.cli import pass_context
 from airmail.services.ecs_service import ECSService
 
 @click.group(short_help='Create/modify ECS services')
 @pass_context
 def cli(ctx):
+    if ctx.dry_run:
+        ctx.warn_log("Running in dry run mode! Commands will not execute against AWS!")
+
     if ctx.env is "":
         ctx.env = click.prompt('In which environment would you like to deploy?', type=str)
 
@@ -26,11 +30,16 @@ def deploy_service(ctx):
     ctx.info_log('Running deploy-service...')
     ctx.info_log('This command will create an ECS service or update an existing service.')
     service_exists = ctx.ecs_service.service_exists() # Does the service exist?
-
     if service_exists:
-        ctx.ecs_service.update_service()
+        if not ctx.dry_run:
+            ctx.ecs_service.update_service()
+        else:
+            ctx.warn_log("Service exists but will not be updated due to dry run mode")
     else:
-        ctx.ecs_service.create_service()
+        if not ctx.dry_run:
+            ctx.ecs_service.create_service()
+        else:
+            ctx.warn_log("Service does not exist but will not be created due to dry run mode")
 
 @cli.command(name = 'register-task', short_help='Creates a task definition based off the deploy configuration file')
 @pass_context
@@ -39,15 +48,23 @@ def register_task(ctx):
     ctx.info_log('This command will create a task definition for project based off the deploy configuration file')
     ctx.add_line_break()
     task_definition = ctx.ecs_service.create_task_definition()
-    ctx.ecs_service.register_task_definition(task_definition)
+    if not ctx.dry_run:
+        ctx.ecs_service.register_task_definition(task_definition)
+    else:
+        ctx.warn_log("Task not registered due to dry run flag")
+        ctx.verbose_log("Generated task definition JSON:")
+        ctx.verbose_log(json.dumps(task_definition))
 
 
 @cli.command(name = 'build-image', short_help='Builds a Docker image and pushes to ECR based on your deploy configuration')
 @pass_context
 def buildImage(ctx):
-    ctx.info_log('Running build-image...')
-    ctx.info_log('This command will build the image for ')
+    ctx.info_log("Running build-image...")
+    ctx.info_log("This command will build the image for ")
     ctx.add_line_break()
 
-    built_tag = ctx.ecs_service.build_container_image()
-    ctx.info_log('Built project image: ' + built_tag)
+    if not ctx.dry_run:
+        built_tag = ctx.ecs_service.build_container_image()
+        ctx.info_log("Built project image: " + built_tag)
+    else:
+        ctx.warn_log("Image not built due to dry run flag")

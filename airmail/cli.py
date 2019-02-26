@@ -22,18 +22,25 @@ class Context(object):
             self.log(msg, *args)
 
     def preamble_log(self, preamble, value):
-        click.echo(click.style(preamble, fg='blue', bold=True) + ': ' + value)
+        click.echo(click.style(preamble, fg="blue", bold=True) + ": " + value)
+
+    def warn_log(self, msg):
+        click.echo(click.style("Warn", fg="yellow", bold=True) + ": " + msg)
+
+    def verbose_log(self, msg):
+        if self.verbose:
+            click.echo(click.style("Verbose", fg="white", bold=True) + ": " + msg)
 
     def info_log(self, msg):
-        click.echo(click.style('Info', fg='green', bold=True) + ': ' + msg)
+        click.echo(click.style("Info", fg="green", bold=True) + ": " + msg)
 
     def add_line_break(self):
-        click.echo('\n')
+        click.echo("\n")
 
     def err_log(self, msg, *args):
         if args:
             msg %= args
-        click.echo(click.style('Error: ', fg='red', bold=True) + msg)
+        click.echo(click.style("Error: ", fg="red", bold=True) + msg)
 
 
 pass_context = click.make_pass_decorator(Context, ensure=True)
@@ -64,8 +71,12 @@ class AirMailCLI(click.MultiCommand):
 @click.command(cls=AirMailCLI, context_settings=CONTEXT_SETTINGS)
 @click.option('-p', '--profile', help='The AWS profile to use', default=lambda: os.environ.get('AWS_PROFILE', None))
 @click.option('-e', '--env', help='The environment to target', default=lambda: os.environ.get('ENV', ''))
+@click.option('-d', '--dry-run', help='Commands run with this flag will not result in actual changes to your AWS configuration', default=lambda: os.environ.get('DRY_RUN', False))
+@click.option('-v', '--verbose', help='Run commands with verbose logging', default=lambda: os.environ.get('VERBOSE', False))
 @pass_context
-def cli(ctx, profile, env):
+def cli(ctx, profile, env, dry_run, verbose):
     """A CLI for getting code into the cloud"""
     ctx.env = env
     ctx.profile = profile
+    ctx.dry_run = bool(dry_run)
+    ctx.verbose = bool(verbose)
