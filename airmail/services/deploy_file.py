@@ -6,15 +6,12 @@ import boto3
 
 class DeployFile():
     def __init__(self, env, config):
-        # config = config if config is not None else "config.yml"
-
         # Grab cwd
         self.cwd = os.getcwd()
         # Grab file
         self.file_path = self.cwd + '/.deploy/' + config
         # Read file or throw
         self.deploy_json = read_yml(self.file_path)
-        print('Config file!!!', self.deploy_json)
         # The environment
         self.env = env
 
