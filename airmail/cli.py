@@ -69,14 +69,16 @@ class AirMailCLI(click.MultiCommand):
         return mod.cli
 
 @click.command(cls=AirMailCLI, context_settings=CONTEXT_SETTINGS)
-@click.option('-p', '--profile', help='The AWS profile to use', default=lambda: os.environ.get('AWS_PROFILE', None))
-@click.option('-e', '--env', help='The environment to target', default=lambda: os.environ.get('ENV', ''))
-@click.option('-d', '--dry-run', help='Commands run with this flag will not result in actual changes to your AWS configuration', default=lambda: os.environ.get('DRY_RUN', False))
-@click.option('-v', '--verbose', help='Run commands with verbose logging', default=lambda: os.environ.get('VERBOSE', False))
+@click.option("-p", "--profile", help="The AWS profile to use", default=lambda: os.environ.get("AWS_PROFILE", None))
+@click.option("-e", "--env", help="The environment to target", default=lambda: os.environ.get("ENV", ""))
+@click.option("-d", "--dry-run", help="Commands run with this flag will not result in actual changes to your AWS configuration", default=lambda: os.environ.get("DRY_RUN", False))
+@click.option("-c", "--config-file", help="Specify the config file to use when running the commands", default=lambda: os.environ.get("CONFIG_FILE", "config.yml"))
+@click.option("-v", "--verbose", help="Run commands with verbose logging", default=lambda: os.environ.get("VERBOSE", False))
 @pass_context
-def cli(ctx, profile, env, dry_run, verbose):
+def cli(ctx, profile, env, dry_run, config_file, verbose):
     """A CLI for getting code into the cloud"""
     ctx.env = env
     ctx.profile = profile
     ctx.dry_run = bool(dry_run)
     ctx.verbose = bool(verbose)
+    ctx.config_file = config_file

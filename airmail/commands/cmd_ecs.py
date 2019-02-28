@@ -14,7 +14,7 @@ def cli(ctx):
     if ctx.env is "":
         ctx.env = click.prompt('In which environment would you like to deploy?', type=str)
 
-    ecs_service = ECSService(env=ctx.env, profile=ctx.profile)
+    ecs_service = ECSService(env=ctx.env, profile=ctx.profile, config=ctx.config_file)
     ctx.ecs_service = ecs_service
     ctx.add_line_break()
     ctx.preamble_log("Current Env", ecs_service.get_env())

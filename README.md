@@ -29,6 +29,15 @@ A list of commands and corresponding arguments/environment variables [can be fou
 
 Airmail assumes your local env is configured per [Boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html#configuration) configuration. The tool uses Boto3 to execute requests to AWS and does not do anything to setup your local environment.
 
+### Environment Variables
+
+You can use a few environment variables to control how Airmail is run.
+
+- `AWS_PROFILE`: will run the Boto3 commands under the local profile you have configured
+- `AIRMAIL_ENV`: automatically chooses which environment to run commands for. Good for CI/CD so the prompt is not triggered.
+- `AIRMAIL_DRY_RUN`: will run all of the command except the actual call to AWS
+- `AIRMAIL_CONFIG_FILE` _(default: `config.yml`)_: specifies the file to read from in the `.deploy` directory for application configuration. The file must be a valid YAML file.
+- `AIRMAIL_VERBOSE`: will log in verbose mode. Good for debugging.
 
 ## Local Development
 
