@@ -45,11 +45,12 @@ class TaskConfig():
         config['family'] = self.get_top_level_prop('family')
 
         self.set_into_container_definition(config, 'name', self.get_top_level_prop('name'))
+        self.set_into_container_definition(config, 'command', self.get_prop('deployment.command', []))
         self.set_into_container_definition(config, 'image', self.get_top_level_prop('imageID') + ':' + self.image_version)
-        self.set_into_container_definition(config, 'command', self.get_prop('deployment.command'))
         self.set_into_container_definition(config, 'cpu', self.get_prop('deployment.cpu'))
         self.set_into_container_definition(config, 'memory', self.get_prop('deployment.memory'))
         self.set_into_container_definition(config, 'portMappings[0].containerPort', self.get_prop('deployment.port'))
+
         return config
 
     def assign_logging(self, config):
