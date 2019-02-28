@@ -10,7 +10,7 @@ from airmail.utils.bash import run_script
 from airmail.utils.files import read_package_json_version
 
 class ECSService(DeployFile):
-    def __init__(self, env=None, profile=None):
+    def __init__(self, env=None, profile=None, config=None):
         # ECS client
         if profile is None:
             self.client = boto3.client('ecs')
@@ -22,7 +22,7 @@ class ECSService(DeployFile):
         self.profile = profile
 
         # Init the Deploy File class
-        DeployFile.__init__(self, self.env)
+        DeployFile.__init__(self, self.env, config)
 
         self.ServiceConfigBuilder = ServiceConfig(self.get_prop, self.get_top_level_prop, self.get_with_prefix)
         self.TaskConfigBuilder = TaskConfig(self.get_prop, self.get_top_level_prop, self.get_with_prefix)
