@@ -9,7 +9,7 @@ class DeployFile():
         # Grab cwd
         self.cwd = os.getcwd()
         # Grab file
-        self.file_path = self.cwd + '/.deploy/' + config
+        self.file_path = "{cwd}/.deploy/{config}".format(cwd=self.cwd, config=config)
         # Read file or throw
         self.deploy_json = read_yml(self.file_path)
         # The environment
@@ -36,11 +36,12 @@ class DeployFile():
 
     def get_service(self):
         """Get the service name from the config file"""
-        env_service_declaration = get(self.deploy_json, self.env + ".service", False)
+        prop = "{env}.service".format(env=self.env)
+        env_service_declaration = get(self.deploy_json, prop, False)
         return env_service_declaration
 
     def build_image_id(self):
-        image_tag = self.get_top_level_prop('accountID') + '.dkr.ecr.us-east-1.amazonaws.com/' + self.get_with_prefix('name', '/')
+        image_tag = "{tag}.dkr.ecr.us-east-1.amazonaws.com/{name}".format(tag=self.get_top_level_prop('accountID'), name=self.get_with_prefix('name', '/'))
         set_(self.deploy_json, '.imageID', image_tag)
 
     def get_with_prefix(self, prop, delim='-'):
