@@ -6,12 +6,15 @@ The `config.yml` file should live in a `.deploy` directory at the root of your p
 ```yaml
 name: coolapp
 org: myorg
+cluster: clustername
+ecrRepo: reponame
 projectDirectory: app
 
 qa:
   service: coolservice
   taskRole: myCoolRole
   executionRole: myCoolTaskExecutionRole
+  envFile: env-file.env
   deployment:
     command: ["npm", "start"]
     cpu: 1
@@ -37,11 +40,9 @@ Below are a list of all the top level properties required in the config file. Th
 
 > `name` (string)
 
-This should be the name of the application you're deploying. It's value will be used to compute the following:
-
-  - The ECR repo to push the image to
-  - The name of the container in the task definition
-  - The name of the cluster to deploy into
+This should be the name of the application you're deploying. Its value will be
+used to name the container in the task definition, and it is also the default
+value for the ECR repo and cluster to deploy to if custom values are not set.
 
 #### Org
 
@@ -51,6 +52,22 @@ This property is used to namespace all ECR repos and clusters in your AWS setup.
 
   - The top-level namespace of ECR repo's
   - The top-level namespace of all ECS clusters
+
+#### Cluster Name
+
+> `cluster` (string)
+
+An optional parameter for the name of the cluster to launch the service in, to
+which Airmail will add the org name and environment prefixes. If not set,
+Airmail will use the value of the `name` field.
+
+#### ECR Repo
+
+> `ecrRepo` (string)
+
+An optional parameter for the name of the ECR repo to push the container image to, to
+which Airmail will add the org name and environment prefixes. If not set,
+Airmail will use the value of the `name` field.
 
 #### Project Directory
 
