@@ -65,7 +65,7 @@ class TaskConfig():
     def assign_env_vars(self, config):
         """ Read from the environment env file and turn the values into environment variables for the task definition """
         env_vars = []
-        env_dict=dotenv_values(dotenv_path='./.deploy/' + self.get_prop('envFile', self.env))
+        env_dict=dotenv_values(dotenv_path='./.deploy/' + self.get_prop('envFile', self.env + '.env'))
 
         for name, value in env_dict.items():
             env_vars.append({
