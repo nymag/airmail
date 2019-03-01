@@ -56,7 +56,7 @@ class DeployFile():
 
 
     def inject_cluster_and_family(self):
-        """Using the `name`, assign the cluster and family for the service/task"""
+        """Assign the cluster and family for the service/task using the `name` and `cluster` fields if set"""
 
         cluster_val = self.get_with_prefix('cluster')
         family_val = self.get_with_prefix('name')
