@@ -93,7 +93,11 @@ class ECSService(DeployFile):
         Docker CLI and push that image to ECT
         """
 
-        ecr_repo  = self.get_with_prefix('name', '/')
+        ecr_repo  = self.get_with_prefix('ecrRepo', '/')
+
+        if ecr_repo is None:
+            ecr_repo = self.get_with_prefix('name', '/')
+
         version   = self.find_image_version()
         image_tag = self.get_top_level_prop('imageID') + ':' + version
         app_dir   = self.get_top_level_prop('projectDirectory')

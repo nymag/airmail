@@ -46,6 +46,10 @@ class DeployFile():
 
     def get_with_prefix(self, prop, delim='-'):
         """Retrieve a value with <ORG>-<ENV>- prefix. Can pass in custom delimiter """
+
+        if prop not in self.deploy_json:
+            return None
+
         top_level = self.get_top_level_prop(prop)
         value = top_level if top_level != None else self.get_prop(prop)
         return self.get_org() + delim + self.env + delim + value
@@ -54,9 +58,14 @@ class DeployFile():
     def inject_cluster_and_family(self):
         """Using the `name`, assign the cluster and family for the service/task"""
 
-        cluster_val = self.get_with_prefix('name')
+        cluster_val = self.get_with_prefix('cluster')
+        family_val = self.get_with_prefix('name')
+
+        if cluster_val is None:
+            cluster_val = self.get_with_prefix('name')
+
         set_(self.deploy_json, '.cluster', cluster_val)
-        set_(self.deploy_json, '.family', cluster_val)
+        set_(self.deploy_json, '.family', family_val)
 
     #  Get a tol level property
     def get_top_level_prop(self, prop, default=None):
