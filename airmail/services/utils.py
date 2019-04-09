@@ -2,6 +2,7 @@ import os, sys
 from pathlib import Path
 import click
 import yaml
+import boto3
 
 def err_log(msg, *args):
     if args:
@@ -34,3 +35,11 @@ def determine_project_path():
         print("I'm sorry, but something is wrong.")
         print("There is no __file__ variable. Please contact the author.")
         sys.exit ()
+
+def construct_param_arn(param_name):
+    aws_account_id = boto3.client('sts').get_caller_identity().get('Account')
+    aws_region = boto3.session.Session().region_name
+
+    return f"arn:aws:ssm:{aws_region}:{aws_account_id}:parameter/{param_name}"
+
+

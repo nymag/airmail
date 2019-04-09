@@ -3,6 +3,7 @@ from pydash import set_
 from dotenv import dotenv_values
 from airmail.utils.files import read_yml,determine_project_path
 from airmail.utils.config import build_config
+from .utils import construct_param_arn
 
 class TaskConfig():
     def __init__(self, get_prop, get_top_level_prop, get_with_prefix):
@@ -63,15 +64,27 @@ class TaskConfig():
         return config
 
     def assign_env_vars(self, config):
-        """ Read from the environment env file and turn the values into environment variables for the task definition """
+        """ Read from the environment env file and turn the values into environment variables and secrets for the task definition """
         env_vars = []
+        secrets = []
         env_dict=dotenv_values(dotenv_path='./.deploy/' + self.get_prop('envFile', self.env + '.env'))
 
         for name, value in env_dict.items():
-            env_vars.append({
-                'name': name,
-                'value': value
-            })
+
+            if value.startswith("ssm://"):
+                param_arn = construct_param_arn(value.strip("ssm://"))
+
+                secrets.append({
+                    'name': name,
+                    'valueFrom': param_arn
+                })
+
+            else:
+                env_vars.append({
+                    'name': name,
+                    'value': value
+                })
 
         self.set_into_container_definition(config, 'environment', env_vars)
+        self.set_into_container_definition(config, 'secrets', secrets)
         return config

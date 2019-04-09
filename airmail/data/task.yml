@@ -15,6 +15,7 @@ containerDefinitions:
         protocol: tcp
     essential: true
     environment: []
+    secrets: []
     mountPoints: []
     volumesFrom: []
 volumes: []
