@@ -68,3 +68,16 @@ def buildImage(ctx):
         ctx.info_log("Built project image: " + built_tag)
     else:
         ctx.warn_log("Image not built due to dry run flag")
+
+# @cli.command(name = 'set-secret', short_help='Uploads a secret to AWS Parameter Store')
+# @pass_context
+# def buildImage(ctx):
+#     ctx.info_log("Running build-image...")
+#     ctx.info_log("This command will build the image for ")
+#     ctx.add_line_break()
+#
+#     if not ctx.dry_run:
+#         built_tag = ctx.ecs_service.build_container_image()
+#         ctx.info_log("Built project image: " + built_tag)
+#     else:
+#         ctx.warn_log("Image not built due to dry run flag")

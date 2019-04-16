@@ -30,7 +30,6 @@ class DeployFile():
     def get_name(self):
         return self.get_top_level_prop('name')
 
-    # Grab the org name
     def get_org(self):
         return self.get_top_level_prop('org')
 
@@ -67,7 +66,6 @@ class DeployFile():
         set_(self.deploy_json, '.cluster', cluster_val)
         set_(self.deploy_json, '.family', family_val)
 
-    #  Get a tol level property
     def get_top_level_prop(self, prop, default=None):
         """Retrieve a property's value from the top level of the config"""
         return get(self.deploy_json, prop, default)

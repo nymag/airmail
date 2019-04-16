@@ -83,7 +83,8 @@ class ECSService(DeployFile):
     def create_task_definition(self):
         """Return the JSON for a task definition"""
 
-        image_version = self.find_image_version()
+        # config_version = self.get_prop('deployment.version')
+        # image_version = self.get_version()
         return self.TaskConfigBuilder.build(image_version, self.env)
 
     def build_container_image(self):
@@ -98,13 +99,14 @@ class ECSService(DeployFile):
         if ecr_repo is None:
             ecr_repo = self.get_with_prefix('name', '/')
 
-        version   = self.find_image_version()
-        image_tag = self.get_top_level_prop('imageID') + ':' + version
         app_dir   = self.get_top_level_prop('projectDirectory')
+        version = read_package_json_version(app_dir)
+        ecr_image_tag = self.get_top_level_prop('imageID')
+
         env_dict  = {
             'VERSION': version,
             'ECR_REPO': ecr_repo,
-            'TASK_IMAGE_TAG': image_tag,
+            'TASK_IMAGE_TAG': ecr_image_tag,
             'APP_DIR': app_dir
         }
 
@@ -116,20 +118,8 @@ class ECSService(DeployFile):
         if (val == 0): # If a good run, return the tag
             return image_tag
         else: # TODO: Handle error
-            print('The image build went poorly')
-
-    def find_image_version(self):
-        """Grabs the version of the image to build from the config file
-        or pulls from the package.json file in the project directory
-        """
-
-        package_version = read_package_json_version(self.get_top_level_prop('projectDirectory'))
-        config_version = self.get_prop('deployment.version')
-
-        if config_version is not None:
-            return config_version
-        else:
-            return package_version
+            print('The image build failed')
+            exit()
 
     def register_task_definition(self, task):
         """Given task definition JSON, make the container and create a task definition"""

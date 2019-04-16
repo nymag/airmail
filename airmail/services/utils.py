@@ -36,6 +36,7 @@ def determine_project_path():
         print("There is no __file__ variable. Please contact the author.")
         sys.exit ()
 
+# Constructs ARN of secret in Parameter Store to inject in Task Definition
 def construct_param_arn(param_name):
     aws_account_id = boto3.client('sts').get_caller_identity().get('Account')
     aws_region = boto3.session.Session().region_name
